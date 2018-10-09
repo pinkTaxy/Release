@@ -3,6 +3,7 @@ package hwr.stud.tamponapp;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.JsonReader;
 import android.util.Log;
@@ -20,22 +21,26 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
+
+import hwr.stud.mylibrary.HttpDigestAuth;
 
 public class LoginActivity extends AppCompatActivity {
 
-    EditText username;
-    EditText password;
-    Button signIn;
-    TextView loggedInStatus;
+    private EditText username;
+    private EditText password;
+    private Button signIn;
+    private TextView loggedInStatus;
 
-    String usernameString;
-    String passwordString;
-    String loginURLString;
+   /* private final String usernameString = null;
+    private final String passwordString = null;
+    private final String loginURLString = null;*/
 
-    Boolean loggedIn = false;
+    private Boolean loggedIn = false;
 
-    Intent intentStats;
+    private Intent intentStats;
+    private Intent intentLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login2);
 
         intentStats = new Intent(this, StatsActivity.class);
+        intentLogin = new Intent(this, LoginActivity.class);
 
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
@@ -54,86 +60,143 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 // Read username and password from form
-                usernameString = username.getText().toString();
-                passwordString = password.getText().toString();
+                final String usernameString = username.getText().toString();
+                final String passwordString = password.getText().toString();
 
                 // Create loginURLString with params
-                loginURLString = "http://192.168.178.54:8080/login"; //?un=" + usernameString + "&pw=" + passwordString;
+                final String loginURLString = "http://192.168.178.54:8080/login"; //?un=" + usernameString + "&pw=" + passwordString;
 
                 // talk to REST Service, done in separate worker thread
                 // to be changed to Https
+                loginPOSTRequest(loginURLString, usernameString, passwordString);
+            }
+
+            private void loginPOSTRequest(
+                    final String loginURLString,
+                    final String usernameString,
+                    final String passwordString) {
+
                 AsyncTask.execute(new Runnable() {
                     @Override
                     public void run() {
-                        try {
-                            // open connection
-                            URL loginURL = new URL(loginURLString);
-                            HttpURLConnection loginConnection = (HttpURLConnection) loginURL.openConnection();
 
-                            // set methode to POST
+
+                        HttpURLConnection loginConnection = establishHttpConnection(
+                                loginURLString,
+                                usernameString,
+                                passwordString
+                        );
+
+                        // set methode to POST
+                        try {
                             loginConnection.setRequestMethod("POST");
                             loginConnection.setDoOutput(true);
                             loginConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
                             loginConnection.setRequestProperty("Accept", "application/json");
                             loginConnection.setChunkedStreamingMode(0);
+                        } catch (ProtocolException e) {
+                            e.printStackTrace();
+                        }
 
-
-                            // construct request body
-                            JSONObject loginJSON = new JSONObject();
+                        // construct request body
+                        JSONObject loginJSON = new JSONObject();
+                        try {
                             loginJSON.put("un", usernameString);
                             loginJSON.put("pw", passwordString);
-
-                            // set content length
-                            // loginConnection.setRequestProperty("Content-Length", String.valueOf(loginJSON.toString().length()));
-
-                            // write requestbody
-                            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(loginConnection.getOutputStream());
-                            outputStreamWriter.write(loginJSON.toString());
-                            //////// STREAMS IMMER FLUSH()!!!!!!
-                            outputStreamWriter.flush();
-
-                            // test request
-                            Log.i("[loginJSON]", loginJSON.toString());
-
-                            // handle response as json
-                            if (loginConnection.getResponseCode() == 200) {
-                                InputStream responseBody = loginConnection.getInputStream();
-                                InputStreamReader responseBodyReader = new InputStreamReader(responseBody, "UTF-8");
-                                JsonReader jsonReader = new JsonReader(responseBodyReader);
-
-                                // check for  login success
-                                jsonReader.beginObject();
-                                while (jsonReader.hasNext()) {
-                                    String key = jsonReader.nextName();
-                                    if (key.equals("success")) {
-                                        if (jsonReader.nextString().equals("true")) {
-                                            loggedIn = true;
-                                            startActivity(intentStats);
-                                            break;
-                                        } else {
-                                            loggedIn = false;
-                                        }
-                                    } else {
-                                        jsonReader.skipValue();
-                                    }
-                                }
-                                jsonReader.endObject();
-                                Log.i("[jsonReader]", jsonReader.toString());
-                                jsonReader.close();
-                            }
-                            loginConnection.disconnect();
-
-                            // Exception handling has yet to be done!!
-                        } catch (MalformedURLException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
+                        // write requestbody
+                        try {
+                            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(
+                                    loginConnection.getOutputStream());
+                            try {
+                                outputStreamWriter.write(loginJSON.toString());
+                                outputStreamWriter.flush(); // Streams IMMER flushen!!
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                            // test request
+                            Log.i("[loginJSON]", loginJSON.toString());
+
+                            if(isLoginSuccess(loginConnection)) {startActivity(intentStats);}
+                            else {startActivity(intentLogin);}
+
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        loginConnection.disconnect();
                     }
                 });
+
+            }
+
+            @Nullable
+            HttpURLConnection establishHttpConnection(
+                    String loginURLString,
+                    String usernameString,
+                    String passwordString
+            ) {
+                URL loginURL = null;
+                try {
+                    loginURL = new URL(loginURLString);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+                try {
+                    HttpURLConnection loginConnection =
+                            new HttpDigestAuth().tryAuth(
+                                    (HttpURLConnection) loginURL.openConnection(),
+                                    usernameString,
+                                    passwordString);
+
+                    // HttpURLConnection loginConnection = (HttpURLConnection) loginURL.openConnection();
+
+                    return loginConnection;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+            Boolean isLoginSuccess(HttpURLConnection loginConnection) {
+
+                Boolean isLoggedIn = false;
+
+                JsonReader jsonReader = null;
+                try {
+                    if (loginConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                        InputStream responseBody = loginConnection.getInputStream();
+                        InputStreamReader responseBodyReader = new InputStreamReader(responseBody, "UTF-8");
+                        jsonReader = new JsonReader(responseBodyReader);
+                    }
+                    jsonReader.beginObject();
+                    while (jsonReader.hasNext()) {
+                        String key = jsonReader.nextName();
+                        if (key.equals("success")) {
+                            if (jsonReader.nextString().equals("true")) {
+                                isLoggedIn = true;
+                                // startActivity(intentStats);
+                                break;
+                            } else {
+                                isLoggedIn = false;
+                            }
+                        } else {
+                            jsonReader.skipValue();
+                        }
+                    }
+                    jsonReader.endObject();
+                    Log.i("[jsonReader]", jsonReader.toString());
+                    jsonReader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    isLoggedIn = false;
+                }
+                return isLoggedIn;
             }
         });
 
