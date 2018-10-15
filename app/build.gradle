@@ -1,10 +1,17 @@
 apply plugin: 'com.android.application'
 
 android {
+
+    compileOptions {  // changed due to gradle build problem
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+
     compileSdkVersion 28
     defaultConfig {
+        multiDexEnabled false
         applicationId "hwr.stud.tamponapp"
-        minSdkVersion 19
+        minSdkVersion 24 // changed from 19 to 20 due to gradle build error "multiDex"
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -29,4 +36,5 @@ dependencies {
     compile 'commons-io:commons-io:2.0.1'
     implementation 'com.google.guava:guava:26.0-jre'
     implementation project(path: ':mylibrary')
+    //compile 'com.android.support:multidex:1.0.3'
 }

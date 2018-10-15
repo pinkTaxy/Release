@@ -148,13 +148,13 @@ public class LoginActivity extends AppCompatActivity {
                     return null;
                 }
                 try {
-                    HttpURLConnection loginConnection =
+                   /* HttpURLConnection loginConnection =
                             new HttpDigestAuth().tryAuth(
                                     (HttpURLConnection) loginURL.openConnection(),
                                     usernameString,
-                                    passwordString);
+                                    passwordString);*/
 
-                    // HttpURLConnection loginConnection = (HttpURLConnection) loginURL.openConnection();
+                    HttpURLConnection loginConnection = (HttpURLConnection) loginURL.openConnection();
 
                     return loginConnection;
                 } catch (IOException e) {
