@@ -18,12 +18,15 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.Base64;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -33,6 +36,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import hwr.stud.mylibrary.HttpDigestAuth;
+import hwr.stud.mylibrary.HttpsHelper;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -88,23 +92,28 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void run() {
 
-                        trustAllHosts();
+                        HttpsHelper.trustAllHosts();
 
-                        HttpsURLConnection loginConnection = establishHttpsConnection(
+                        HttpsURLConnection loginConnection = HttpsHelper.establishHttpsConnectionAllCert(
                                 loginURLString,
                                 usernameString,
                                 passwordString
                         );
+                        Log.i("[establishHttpsConnection()]", "success.");
 
-                        // set methode to POST
                         try {
                             loginConnection.setRequestMethod("POST");
                             loginConnection.setDoOutput(true);
                             loginConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
                             loginConnection.setRequestProperty("Accept", "application/json");
                             loginConnection.setChunkedStreamingMode(0);
+                            loginConnection.setConnectTimeout(5000);
+                            loginConnection.setRequestProperty("Authorization", HttpsHelper.setBasicAuth(usernameString, passwordString));
+                            Log.i("[loginConnection]", "Request methode set to POST");
+                            Log.i("[setBasicAuth]", "Basic Auth was set.");
                         } catch (ProtocolException e) {
                             e.printStackTrace();
+                            Log.i("[JSON]", "No Response from Server!");
                         }
 
                         // construct request body
@@ -112,17 +121,25 @@ public class LoginActivity extends AppCompatActivity {
                         try {
                             loginJSON.put("un", usernameString);
                             loginJSON.put("pw", passwordString);
+                            Log.i("[JSONObject]", "Request Body was created");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
+                        Log.i("[??]", "wtf?");
                         // write requestbody
                         try {
-                            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(
-                                    loginConnection.getOutputStream());
+                            Log.i("[try]", "jup.");
+                            //int errorNo = loginConnection.getErrorStream().read();
+                            //String error = String.valueOf(errorNo);
+                            //Log.i("[errorLog]", error);
+                            OutputStream outputStream = loginConnection.getOutputStream();
+                            Log.i("[getOutputSteam]", "success.");
+                            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
+                            Log.i("[OutputStreamWriter]", "success");
                             try {
                                 outputStreamWriter.write(loginJSON.toString());
                                 outputStreamWriter.flush(); // Streams IMMER flushen!!
+                                Log.i("[outputStreamWriter]", "was flushed.");
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -136,6 +153,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         } catch (IOException e) {
                             e.printStackTrace();
+                            Log.i("[StreamWriter]", "failed.");
                         }
                         loginConnection.disconnect();
                     }
@@ -143,7 +161,7 @@ public class LoginActivity extends AppCompatActivity {
 
             }
 
-            @Nullable
+   /*         @Nullable
             HttpsURLConnection establishHttpsConnection(
                     String loginURLString,
                     String usernameString,
@@ -159,12 +177,13 @@ public class LoginActivity extends AppCompatActivity {
                 try {
                     HttpsURLConnection loginConnection = (HttpsURLConnection) loginURL.openConnection();
                     loginConnection.setHostnameVerifier(DO_NOT_VERIFY);
+                    Log.i("[HttpsURLConnection]", "Connection was established");
                     return loginConnection;
                 } catch (IOException e) {
                     e.printStackTrace();
                     return null;
                 }
-            }
+            }*/
 
             Boolean isLoginSuccess(HttpsURLConnection loginConnection) {
 
@@ -174,27 +193,34 @@ public class LoginActivity extends AppCompatActivity {
                 try {
                     if (loginConnection.getResponseCode() == HttpsURLConnection.HTTP_OK) {
                         InputStream responseBody = loginConnection.getInputStream();
-                        InputStreamReader responseBodyReader = new InputStreamReader(responseBody, "UTF-8");
-                        jsonReader = new JsonReader(responseBodyReader);
+                       // if(responseBody.available() > 0) {
+                            InputStreamReader responseBodyReader = new InputStreamReader(responseBody, "UTF-8");
+                            jsonReader = new JsonReader(responseBodyReader);
+                       // } else {Log.i("[responseBody]","responseBody is not available.");}
+                        Log.i("[isLoginSuccess]", "succeeded.");
                     }
-                    jsonReader.beginObject();
-                    while (jsonReader.hasNext()) {
-                        String key = jsonReader.nextName();
-                        if (key.equals("success")) {
-                            if (jsonReader.nextString().equals("true")) {
-                                isLoggedIn = true;
-                                // startActivity(intentStats);
-                                break;
+
+                    if (jsonReader != null) {
+                        jsonReader.beginObject();
+                        while (jsonReader.hasNext()) {
+                            String key = jsonReader.nextName();
+                            if (key.equals("success")) {
+                                if (jsonReader.nextString().equals("true")) {
+                                    isLoggedIn = true;
+                                    // startActivity(intentStats);
+                                    break;
+                                } else {
+                                    isLoggedIn = false;
+                                }
                             } else {
-                                isLoggedIn = false;
+                                jsonReader.skipValue();
                             }
-                        } else {
-                            jsonReader.skipValue();
                         }
+                        jsonReader.endObject();
+                        Log.i("[jsonReader]", jsonReader.toString());
+                        jsonReader.close();
                     }
-                    jsonReader.endObject();
-                    Log.i("[jsonReader]", jsonReader.toString());
-                    jsonReader.close();
+
                 } catch (IOException e) {
                     e.printStackTrace();
                     isLoggedIn = false;
@@ -206,13 +232,13 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    final static HostnameVerifier DO_NOT_VERIFY = new HostnameVerifier() {
+/*    final static HostnameVerifier DO_NOT_VERIFY = new HostnameVerifier() {
         public boolean verify(String hostname, SSLSession session) {
             return true;
         }
-    };
+    };*/
 
-    private static void trustAllHosts() {
+   /* private static void trustAllHosts() {
         // Create a trust manager that does not validate certificate chains
         TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
             public java.security.cert.X509Certificate[] getAcceptedIssuers() {
@@ -237,5 +263,15 @@ public class LoginActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
+
+/*    protected void setBasicAuth(HttpsURLConnection loginConnection, String username, String password) {
+        String authStr = username + ":" + password;
+        Log.i("[BasicAuth]","Original String is " + authStr);
+
+        // encode data on your side using BASE64
+        byte[] authStrArr = authStr.getBytes();
+        String authEncoded = android.util.Base64.encodeToString(authStrArr, android.util.Base64.NO_WRAP);
+        loginConnection.setRequestProperty("Authorization", "Basic "+authEncoded);
+    }*/
 }

@@ -18,9 +18,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -69,7 +70,7 @@ public class SignupActivity extends AppCompatActivity {
                 sexString = sex.getText().toString();
 
                 // Create loginURLString with params
-                signUpURLString = "http://192.168.178.26:8080/signup"; //?un=" + usernameString + "&pw=" + passwordString;
+                signUpURLString = "https://192.168.178.26:8080/signup"; //?un=" + usernameString + "&pw=" + passwordString;
 
                 // talk to REST Service, done in separate worker thread
                 // to be changed to Https
@@ -79,7 +80,7 @@ public class SignupActivity extends AppCompatActivity {
                         try {
                             // open connection
                             URL signUpURL = new URL(signUpURLString);
-                            HttpURLConnection SignUpConnection = (HttpURLConnection) signUpURL.openConnection();
+                            HttpsURLConnection SignUpConnection = (HttpsURLConnection) signUpURL.openConnection();
 
                             // set methode to POST
                             SignUpConnection.setRequestMethod("POST");
