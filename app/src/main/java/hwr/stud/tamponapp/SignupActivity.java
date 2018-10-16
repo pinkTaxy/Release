@@ -2,14 +2,13 @@ package hwr.stud.tamponapp;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.JsonReader;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -97,10 +96,6 @@ public class SignupActivity extends AppCompatActivity {
                             signupJSON.put("name", nameString);
                             signupJSON.put("email", emailString);
                             signupJSON.put("sex", sexString);
-
-
-                            // set content length
-                            // loginConnection.setRequestProperty("Content-Length", String.valueOf(loginJSON.toString().length()));
 
                             // write requestbody
                             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(SignUpConnection.getOutputStream());

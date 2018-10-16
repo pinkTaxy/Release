@@ -3,7 +3,6 @@ package hwr.stud.tamponapp;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.JsonReader;
 import android.util.Log;
@@ -20,22 +19,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.ProtocolException;
-import java.net.URL;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
-import java.util.Base64;
 
-import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
-import hwr.stud.mylibrary.HttpDigestAuth;
 import hwr.stud.mylibrary.HttpsHelper;
 
 public class LoginActivity extends AppCompatActivity {
@@ -129,9 +116,6 @@ public class LoginActivity extends AppCompatActivity {
                         // write requestbody
                         try {
                             Log.i("[try]", "jup.");
-                            //int errorNo = loginConnection.getErrorStream().read();
-                            //String error = String.valueOf(errorNo);
-                            //Log.i("[errorLog]", error);
                             OutputStream outputStream = loginConnection.getOutputStream();
                             Log.i("[getOutputSteam]", "success.");
                             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
@@ -160,30 +144,6 @@ public class LoginActivity extends AppCompatActivity {
                 });
 
             }
-
-   /*         @Nullable
-            HttpsURLConnection establishHttpsConnection(
-                    String loginURLString,
-                    String usernameString,
-                    String passwordString
-            ) {
-                URL loginURL = null;
-                try {
-                    loginURL = new URL(loginURLString);
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                    return null;
-                }
-                try {
-                    HttpsURLConnection loginConnection = (HttpsURLConnection) loginURL.openConnection();
-                    loginConnection.setHostnameVerifier(DO_NOT_VERIFY);
-                    Log.i("[HttpsURLConnection]", "Connection was established");
-                    return loginConnection;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return null;
-                }
-            }*/
 
             Boolean isLoginSuccess(HttpsURLConnection loginConnection) {
 
@@ -231,47 +191,4 @@ public class LoginActivity extends AppCompatActivity {
 
 
     }
-
-/*    final static HostnameVerifier DO_NOT_VERIFY = new HostnameVerifier() {
-        public boolean verify(String hostname, SSLSession session) {
-            return true;
-        }
-    };*/
-
-   /* private static void trustAllHosts() {
-        // Create a trust manager that does not validate certificate chains
-        TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
-            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                return new java.security.cert.X509Certificate[] {};
-            }
-
-            public void checkClientTrusted(X509Certificate[] chain,
-                                           String authType) throws CertificateException {
-            }
-
-            public void checkServerTrusted(X509Certificate[] chain,
-                                           String authType) throws CertificateException {
-            }
-        } };
-
-        // Install the all-trusting trust manager
-        try {
-            SSLContext sc = SSLContext.getInstance("TLS");
-            sc.init(null, trustAllCerts, new java.security.SecureRandom());
-            HttpsURLConnection
-                    .setDefaultSSLSocketFactory(sc.getSocketFactory());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
-
-/*    protected void setBasicAuth(HttpsURLConnection loginConnection, String username, String password) {
-        String authStr = username + ":" + password;
-        Log.i("[BasicAuth]","Original String is " + authStr);
-
-        // encode data on your side using BASE64
-        byte[] authStrArr = authStr.getBytes();
-        String authEncoded = android.util.Base64.encodeToString(authStrArr, android.util.Base64.NO_WRAP);
-        loginConnection.setRequestProperty("Authorization", "Basic "+authEncoded);
-    }*/
 }
