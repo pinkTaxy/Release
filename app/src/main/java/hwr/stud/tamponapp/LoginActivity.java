@@ -19,10 +19,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import hwr.stud.mylibrary.HttpDigestAuth;
 
@@ -64,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
                 final String passwordString = password.getText().toString();
 
                 // Create loginURLString with params
-                final String loginURLString = "http://192.168.178.54:8080/login"; //?un=" + usernameString + "&pw=" + passwordString;
+                final String loginURLString = "https://192.168.178.26:8080/login"; //?un=" + usernameString + "&pw=" + passwordString;
 
                 // talk to REST Service, done in separate worker thread
                 // to be changed to Https
@@ -80,8 +88,9 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void run() {
 
+                        trustAllHosts();
 
-                        HttpURLConnection loginConnection = establishHttpConnection(
+                        HttpsURLConnection loginConnection = establishHttpsConnection(
                                 loginURLString,
                                 usernameString,
                                 passwordString
@@ -135,7 +144,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Nullable
-            HttpURLConnection establishHttpConnection(
+            HttpsURLConnection establishHttpsConnection(
                     String loginURLString,
                     String usernameString,
                     String passwordString
@@ -148,14 +157,8 @@ public class LoginActivity extends AppCompatActivity {
                     return null;
                 }
                 try {
-                   /* HttpURLConnection loginConnection =
-                            new HttpDigestAuth().tryAuth(
-                                    (HttpURLConnection) loginURL.openConnection(),
-                                    usernameString,
-                                    passwordString);*/
-
-                    HttpURLConnection loginConnection = (HttpURLConnection) loginURL.openConnection();
-
+                    HttpsURLConnection loginConnection = (HttpsURLConnection) loginURL.openConnection();
+                    loginConnection.setHostnameVerifier(DO_NOT_VERIFY);
                     return loginConnection;
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -163,13 +166,13 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
 
-            Boolean isLoginSuccess(HttpURLConnection loginConnection) {
+            Boolean isLoginSuccess(HttpsURLConnection loginConnection) {
 
                 Boolean isLoggedIn = false;
 
                 JsonReader jsonReader = null;
                 try {
-                    if (loginConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    if (loginConnection.getResponseCode() == HttpsURLConnection.HTTP_OK) {
                         InputStream responseBody = loginConnection.getInputStream();
                         InputStreamReader responseBodyReader = new InputStreamReader(responseBody, "UTF-8");
                         jsonReader = new JsonReader(responseBodyReader);
@@ -201,5 +204,38 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    final static HostnameVerifier DO_NOT_VERIFY = new HostnameVerifier() {
+        public boolean verify(String hostname, SSLSession session) {
+            return true;
+        }
+    };
+
+    private static void trustAllHosts() {
+        // Create a trust manager that does not validate certificate chains
+        TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
+            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                return new java.security.cert.X509Certificate[] {};
+            }
+
+            public void checkClientTrusted(X509Certificate[] chain,
+                                           String authType) throws CertificateException {
+            }
+
+            public void checkServerTrusted(X509Certificate[] chain,
+                                           String authType) throws CertificateException {
+            }
+        } };
+
+        // Install the all-trusting trust manager
+        try {
+            SSLContext sc = SSLContext.getInstance("TLS");
+            sc.init(null, trustAllCerts, new java.security.SecureRandom());
+            HttpsURLConnection
+                    .setDefaultSSLSocketFactory(sc.getSocketFactory());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
