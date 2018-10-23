@@ -22,6 +22,10 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import hwr.stud.mylibrary.HttpsHelper;
+
+import static hwr.stud.mylibrary.HttpsHelper.*;
+
 public class SignupActivity extends AppCompatActivity {
 
     EditText username;
@@ -69,7 +73,7 @@ public class SignupActivity extends AppCompatActivity {
                 sexString = sex.getText().toString();
 
                 // Create loginURLString with params
-                signUpURLString = "https://192.168.178.26:8080/signup"; //?un=" + usernameString + "&pw=" + passwordString;
+                signUpURLString = "https://192.168.178.26:443/signup"; //?un=" + usernameString + "&pw=" + passwordString;
 
                 // talk to REST Service, done in separate worker thread
                 // to be changed to Https
@@ -77,6 +81,10 @@ public class SignupActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         try {
+
+                            trustAllHosts();
+                            Log.i("[signUp]", "Trust all hosts succeeded");
+
                             // open connection
                             URL signUpURL = new URL(signUpURLString);
                             HttpsURLConnection SignUpConnection = (HttpsURLConnection) signUpURL.openConnection();
@@ -87,7 +95,7 @@ public class SignupActivity extends AppCompatActivity {
                             SignUpConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
                             SignUpConnection.setRequestProperty("Accept", "application/json");
                             SignUpConnection.setChunkedStreamingMode(0);
-
+                            SignUpConnection.setHostnameVerifier(HttpsHelper.DO_NOT_VERIFY);
 
                             // construct request body
                             JSONObject signupJSON = new JSONObject();
@@ -134,6 +142,7 @@ public class SignupActivity extends AppCompatActivity {
                             SignUpConnection.disconnect();
 
                             // Exception handling has yet to be done!!
+
                         } catch (MalformedURLException e) {
                             e.printStackTrace();
                         } catch (IOException e) {

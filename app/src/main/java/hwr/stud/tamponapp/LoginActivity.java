@@ -63,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
                 final String passwordString = password.getText().toString();
 
                 // Create loginURLString with params
-                final String loginURLString = "https://192.168.178.26:8080/login"; //?un=" + usernameString + "&pw=" + passwordString;
+                final String loginURLString = "https://192.168.178.26:443/login"; //?un=" + usernameString + "&pw=" + passwordString;
 
                 // talk to REST Service, done in separate worker thread
                 // to be changed to Https
