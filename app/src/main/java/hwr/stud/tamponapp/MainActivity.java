@@ -14,8 +14,11 @@ public class MainActivity extends AppCompatActivity {
     Button toSignUp;
     Intent intentSignUp;
 
+<<<<<<< HEAD
     Button toContent;
     Intent intentContent;
+=======
+>>>>>>> ae2693ce2141c40cdd72e17f0ab977bd43e07379
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +44,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+<<<<<<< HEAD
+=======
+
+
+
+
+>>>>>>> ae2693ce2141c40cdd72e17f0ab977bd43e07379
     }
 
 }

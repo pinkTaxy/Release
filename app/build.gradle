@@ -38,6 +38,9 @@ dependencies {
     compile 'commons-io:commons-io:2.0.1'
     implementation 'com.google.guava:guava:26.0-jre'
     implementation project(path: ':mylibrary')
+<<<<<<< HEAD
     implementation 'com.android.support:support-v4:28.0.0'
+=======
+>>>>>>> ae2693ce2141c40cdd72e17f0ab977bd43e07379
     //compile 'com.android.support:multidex:1.0.3'
 }

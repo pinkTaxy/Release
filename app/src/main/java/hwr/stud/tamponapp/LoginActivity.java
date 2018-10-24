@@ -48,6 +48,10 @@ public class LoginActivity extends AppCompatActivity {
 
         intentStats = new Intent(this, StatsActivity.class);
         intentLogin = new Intent(this, LoginActivity.class);
+<<<<<<< HEAD
+=======
+
+>>>>>>> ae2693ce2141c40cdd72e17f0ab977bd43e07379
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
         signIn = (Button) findViewById(R.id.signIn);

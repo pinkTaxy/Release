@@ -1,9 +1,13 @@
 <resources>
     <string name="app_name">TamponApp</string>
+<<<<<<< HEAD
     <string name="Signin">Signin</string>
     <string name="Login">Login</string>
     <string name="Donates_overall">Donates overall:</string>
     <string name="Donates_own">Donates_own:</string>
+=======
+    <string name="title_activity_login">Sign in</string>
+>>>>>>> ae2693ce2141c40cdd72e17f0ab977bd43e07379
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
