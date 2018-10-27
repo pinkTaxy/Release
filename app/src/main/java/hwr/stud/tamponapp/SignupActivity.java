@@ -22,9 +22,7 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import hwr.stud.mylibrary.HttpsHelper;
-
-import static hwr.stud.mylibrary.HttpsHelper.*;
+import hwr.stud.mylibrary.HttpsUtility;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -73,7 +71,7 @@ public class SignupActivity extends AppCompatActivity {
                 sexString = sex.getText().toString();
 
                 // Create loginURLString with params
-                signUpURLString = "https://192.168.178.26:443/signup"; //?un=" + usernameString + "&pw=" + passwordString;
+                signUpURLString = "https://192.168.178.54:443/signup"; //?un=" + usernameString + "&pw=" + passwordString;
 
                 // talk to REST Service, done in separate worker thread
                 // to be changed to Https
@@ -82,7 +80,7 @@ public class SignupActivity extends AppCompatActivity {
                     public void run() {
                         try {
 
-                            trustAllHosts();
+                            HttpsUtility.trustAllCertificates();
                             Log.i("[signUp]", "Trust all hosts succeeded");
 
                             // open connection
@@ -95,7 +93,7 @@ public class SignupActivity extends AppCompatActivity {
                             SignUpConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
                             SignUpConnection.setRequestProperty("Accept", "application/json");
                             SignUpConnection.setChunkedStreamingMode(0);
-                            SignUpConnection.setHostnameVerifier(HttpsHelper.DO_NOT_VERIFY);
+                            // SignUpConnection.setHostnameVerifier(HttpsHelper.DO_NOT_VERIFY);
 
                             // construct request body
                             JSONObject signupJSON = new JSONObject();

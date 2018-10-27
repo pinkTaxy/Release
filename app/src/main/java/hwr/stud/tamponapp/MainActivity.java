@@ -14,20 +14,16 @@ public class MainActivity extends AppCompatActivity {
     Button toSignUp;
     Intent intentSignUp;
 
-<<<<<<< HEAD
-    Button toContent;
-    Intent intentContent;
-=======
->>>>>>> ae2693ce2141c40cdd72e17f0ab977bd43e07379
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        toLogIn = (Button) findViewById(R.id.toLogIn);
+        toLogIn = (Button) findViewById(R.id.toLogin);
         intentLogIn = new Intent(this, LoginActivity.class);
 
-        toSignUp = (Button) findViewById(R.id.toSignUp);
+        toSignUp = (Button) findViewById(R.id.toSignup);
         intentSignUp = new Intent(this, SignupActivity.class);
 
         toLogIn.setOnClickListener(new View.OnClickListener() {
@@ -44,13 +40,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-<<<<<<< HEAD
-=======
 
-
-
-
->>>>>>> ae2693ce2141c40cdd72e17f0ab977bd43e07379
     }
 
 }

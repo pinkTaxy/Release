@@ -4,62 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"><![CDATA[
 
-    <Button
-        android:id="@+id/toLogIn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-<<<<<<< HEAD
-        android:layout_marginTop="387dp"
-        android:layout_marginEnd="199dp"
-        android:layout_marginBottom="76dp"
-        android:text="Log In"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/toSignUp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-=======
-        android:text="Log In"
+    android:text="Log In"
         app:layout_constraintBaseline_toBaselineOf="@+id/toSignUp"
         app:layout_constraintStart_toStartOf="parent" />
->>>>>>> ae2693ce2141c40cdd72e17f0ab977bd43e07379
 
-    <Button
-        android:id="@+id/toSignUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-<<<<<<< HEAD
-        android:layout_marginStart="199dp"
-        android:layout_marginTop="387dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="76dp"
-        android:text="SignUp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/toLogIn"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/toContent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="165dp"
-        android:layout_marginTop="114dp"
-        android:layout_marginEnd="131dp"
-        android:layout_marginBottom="349dp"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-=======
-        android:layout_marginEnd="1dp"
+
+
+
+    android:layout_marginEnd="1dp"
         android:text="SignUp"
         app:layout_constraintEnd_toEndOf="parent"
         tools:layout_editor_absoluteY="387dp" />
->>>>>>> ae2693ce2141c40cdd72e17f0ab977bd43e07379
+
+
+
+    ]]>
+
+    <Button
+        android:id="@+id/toLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Login"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/toSignup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="8dp"
+        android:text="SignUp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

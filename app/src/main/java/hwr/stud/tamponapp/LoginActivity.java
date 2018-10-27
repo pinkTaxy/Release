@@ -19,11 +19,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.net.MalformedURLException;
 import java.net.ProtocolException;
+import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import hwr.stud.mylibrary.HttpsHelper;
+import hwr.stud.mylibrary.HttpBasicAuth;
+import hwr.stud.mylibrary.HttpsUtility;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -48,10 +51,7 @@ public class LoginActivity extends AppCompatActivity {
 
         intentStats = new Intent(this, StatsActivity.class);
         intentLogin = new Intent(this, LoginActivity.class);
-<<<<<<< HEAD
-=======
 
->>>>>>> ae2693ce2141c40cdd72e17f0ab977bd43e07379
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
         signIn = (Button) findViewById(R.id.signIn);
@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
                 final String passwordString = password.getText().toString();
 
                 // Create loginURLString with params
-                final String loginURLString = "https://192.168.178.26:443/login"; //?un=" + usernameString + "&pw=" + passwordString;
+                final String loginURLString = "https://192.168.178.54:443/login"; //?un=" + usernameString + "&pw=" + passwordString;
 
                 // talk to REST Service, done in separate worker thread
                 // to be changed to Https
@@ -82,23 +82,42 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void run() {
 
-                        HttpsHelper.trustAllHosts();
+                        HttpsUtility.trustAllCertificates();
 
-                        HttpsURLConnection loginConnection = HttpsHelper.establishHttpsConnectionAllCert(
-                                loginURLString,
-                                usernameString,
-                                passwordString
-                        );
+                        URL url = null;
+                        try {
+                            url = new URL(loginURLString);
+                        } catch (MalformedURLException e) {
+                            e.printStackTrace();
+                            // TODO: Exeption handling!!
+                        }
+
+                        HttpsURLConnection loginConnection = null;
+                        try {
+                            loginConnection = (HttpsURLConnection) url.openConnection();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
                         Log.i("[establishHttpsConnection()]", "success.");
 
                         try {
                             loginConnection.setRequestMethod("POST");
                             loginConnection.setDoOutput(true);
-                            loginConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-                            loginConnection.setRequestProperty("Accept", "application/json");
+                            loginConnection.setRequestProperty(
+                                    "Content-Type",
+                                    "application/json; charset=UTF-8");
+                            loginConnection.setRequestProperty(
+                                    "Accept",
+                                    "application/json");
                             loginConnection.setChunkedStreamingMode(0);
                             loginConnection.setConnectTimeout(5000);
-                            loginConnection.setRequestProperty("Authorization", HttpsHelper.setBasicAuth(usernameString, passwordString));
+                            loginConnection.setRequestProperty(
+                                    "Authorization",
+                                    "Basic " +
+                                    new HttpBasicAuth(usernameString, passwordString)
+                                            .getAuthString());
+
                             Log.i("[loginConnection]", "Request methode set to POST");
                             Log.i("[setBasicAuth]", "Basic Auth was set.");
                         } catch (ProtocolException e) {
@@ -121,7 +140,8 @@ public class LoginActivity extends AppCompatActivity {
                             Log.i("[try]", "jup.");
                             OutputStream outputStream = loginConnection.getOutputStream();
                             Log.i("[getOutputSteam]", "success.");
-                            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
+                            OutputStreamWriter outputStreamWriter =
+                                    new OutputStreamWriter(outputStream);
                             Log.i("[OutputStreamWriter]", "success");
                             try {
                                 outputStreamWriter.write(loginJSON.toString());
@@ -153,11 +173,14 @@ public class LoginActivity extends AppCompatActivity {
                 Boolean isLoggedIn = false;
 
                 JsonReader jsonReader = null;
+
+
                 try {
                     if (loginConnection.getResponseCode() == HttpsURLConnection.HTTP_OK) {
                         InputStream responseBody = loginConnection.getInputStream();
                        // if(responseBody.available() > 0) {
-                            InputStreamReader responseBodyReader = new InputStreamReader(responseBody, "UTF-8");
+                            InputStreamReader responseBodyReader =
+                                    new InputStreamReader(responseBody, "UTF-8");
                             jsonReader = new JsonReader(responseBodyReader);
                        // } else {Log.i("[responseBody]","responseBody is not available.");}
                         Log.i("[isLoginSuccess]", "succeeded.");
