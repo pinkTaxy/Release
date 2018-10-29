@@ -41,8 +41,7 @@ public class SignupActivity extends AppCompatActivity {
 
     String signUpURLString;
 
-    Intent intentSignIn;
-    Intent intentSignUp;
+    Intent privateStats;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +55,7 @@ public class SignupActivity extends AppCompatActivity {
         sex = (EditText) findViewById(R.id.sex);
         signUp = (Button) findViewById(R.id.signUp);
 
-        intentSignIn = new Intent(this, LoginActivity.class);
-        intentSignUp = new Intent(this, SignupActivity.class);
+        privateStats = new Intent(this, LoginActivity.class);
 
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,10 +122,7 @@ public class SignupActivity extends AppCompatActivity {
                                     String key = jsonReader.nextName();
                                     if (key.equals("success")) {
                                         if (jsonReader.nextString().equals("true")) {
-                                            startActivity(intentSignIn);
-                                            break;
-                                        } else {
-                                            startActivity(intentSignUp);
+                                            startActivity(privateStats);
                                         }
                                     } else {
                                         jsonReader.skipValue();
