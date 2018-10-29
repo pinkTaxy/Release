@@ -18,6 +18,7 @@ public class DonationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_donation);
 
         donate = (Button) findViewById(R.id.donate);
+        privateStatsAcitvity = new Intent(this, PrivateStatsActivity.class);
 
         donate.setOnClickListener(new View.OnClickListener() {
             @Override

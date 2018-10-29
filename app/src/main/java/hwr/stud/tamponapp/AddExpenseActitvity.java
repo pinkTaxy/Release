@@ -17,7 +17,7 @@ public class AddExpenseActitvity extends AppCompatActivity {
         setContentView(R.layout.activity_add_expense_acitvity);
 
         addExpense = (Button) findViewById(R.id.addExpense);
-        privateStats = new Intent(this, AddExpenseActitvity.class);
+        privateStats = new Intent(this, PrivateStatsActivity.class);
 
         addExpense.setOnClickListener(new View.OnClickListener() {
             @Override

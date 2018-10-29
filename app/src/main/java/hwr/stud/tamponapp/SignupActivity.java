@@ -55,7 +55,7 @@ public class SignupActivity extends AppCompatActivity {
         sex = (EditText) findViewById(R.id.sex);
         signUp = (Button) findViewById(R.id.signUp);
 
-        privateStats = new Intent(this, LoginActivity.class);
+        privateStats = new Intent(this, PrivateStatsActivity.class);
 
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,6 +83,7 @@ public class SignupActivity extends AppCompatActivity {
 
                             // open connection
                             URL signUpURL = new URL(signUpURLString);
+                            Log.i("[HttpsURLConnection]", "Opened Connection.");
                             HttpsURLConnection SignUpConnection = (HttpsURLConnection) signUpURL.openConnection();
 
                             // set methode to POST

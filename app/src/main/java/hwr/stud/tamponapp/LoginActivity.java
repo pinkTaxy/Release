@@ -41,14 +41,14 @@ public class LoginActivity extends AppCompatActivity {
 
     private Boolean loggedIn = false;
 
-    private Intent intentStats;
+    private Intent privateStatsActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login2);
 
-        intentStats = new Intent(this, StatsActivity.class);
+        privateStatsActivity = new Intent(this, PrivateStatsActivity.class);
 
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
@@ -152,7 +152,7 @@ public class LoginActivity extends AppCompatActivity {
                             // test request
                             Log.i("[loginJSON]", loginJSON.toString());
 
-                            if(isLoginSuccess(loginConnection)) startActivity(intentStats);
+                            if(isLoginSuccess(loginConnection)) startActivity(privateStatsActivity);
 
                         } catch (IOException e) {
                             e.printStackTrace();
