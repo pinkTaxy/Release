@@ -28,7 +28,8 @@
         <activity android:name=".StatsActivity" />
         <activity android:name=".WelcomeActivity" />
         <activity android:name=".DonationActivity" />
-        <activity android:name=".privateStatsActivity"></activity>
+        <activity android:name=".PrivateStatsActivity" />
+        <activity android:name=".AddExpenseActitvity"></activity>
     </application>
 
 </manifest>

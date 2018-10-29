@@ -4,24 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PrivateStatsActivity">
+    tools:context=".AddExpenseActitvity">
 
     <Button
-        android:id="@+id/toDonation"
+        android:id="@+id/addExpense"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Spenden"
-        app:layout_constraintBaseline_toBaselineOf="@+id/toAddExpense"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/toAddExpense"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="3dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginBottom="28dp"
+        android:layout_marginEnd="160dp"
+        android:layout_marginStart="162dp"
         android:text="Ausgabe hinzufügen"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>

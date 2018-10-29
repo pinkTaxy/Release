@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class privateStatsActivity extends AppCompatActivity {
+public class PrivateStatsActivity extends AppCompatActivity {
 
     Button toDonation;
     Button toAddExpense;
@@ -23,7 +23,7 @@ public class privateStatsActivity extends AppCompatActivity {
         donationActivity = new Intent(this, DonationActivity.class);
 
         toAddExpense = (Button) findViewById(R.id.toAddExpense);
-        addExpenseActivity = new Intent(this, AddExpenseActivity.class);
+        addExpenseActivity = new Intent(this, AddExpenseActitvity.class);
 
         toDonation.setOnClickListener(new View.OnClickListener() {
             @Override
