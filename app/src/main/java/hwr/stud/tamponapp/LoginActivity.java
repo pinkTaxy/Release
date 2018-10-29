@@ -128,8 +128,8 @@ public class LoginActivity extends AppCompatActivity {
                         // construct request body
                         JSONObject loginJSON = new JSONObject();
                         try {
-                            loginJSON.put("un", usernameString);
-                            loginJSON.put("pw", passwordString);
+                            loginJSON.put("username", usernameString);
+                            loginJSON.put("password", passwordString);
                             Log.i("[JSONObject]", "Request Body was created");
                         } catch (JSONException e) {
                             e.printStackTrace();
