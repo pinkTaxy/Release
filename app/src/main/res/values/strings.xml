@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">TamponApp</string>
-    <string name="Signin">Signin</string>
+    <string name="Signup">Signup</string>
     <string name="Login">Login</string>
     <string name="Donates_overall">Donates overall:</string>
     <string name="Donates_own">Donates_own:</string>
@@ -19,4 +19,10 @@
         completions."
     </string>
     <string name="title_activity_signup">SignupActivity</string>
+
+    //// neu angelegte Strings
+    //Welcome Strings
+    <string name="welcome_text_fallback">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</string>
+    <string name="global_stats_fallback">Ausgaben bisher:\n1000 €\n\nSpenden bisher:\n10.000 €</string>
+
 </resources>

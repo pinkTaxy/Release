@@ -6,22 +6,63 @@
     android:layout_height="match_parent"
     tools:context=".PrivateStatsActivity">
 
-    <Button
-        android:id="@+id/toDonation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Spenden"
-        app:layout_constraintBaseline_toBaselineOf="@+id/toAddExpense"
-        app:layout_constraintStart_toStartOf="parent" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="100">
 
-    <Button
-        android:id="@+id/toAddExpense"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="3dp"
-        android:layout_marginTop="16dp"
-        android:text="Ausgabe hinzufügen"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/textViewGlobalStats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="45"
+            android:text="@string/global_stats_fallback"
+            android:textAlignment="center"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/textViewInfoText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="45"
+            android:text="@string/welcome_text_fallback"
+            android:textSize="12sp"
+            android:gravity="center"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="10"
+            android:weightSum="100">
+
+
+            <Button
+                android:id="@+id/toDonation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginStart="16dp"
+                android:text="Spenden"
+                android:layout_weight="50"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <Button
+                android:id="@+id/toAddExpense"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="Ausgabe hinzufügen"
+                android:layout_weight="50"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>

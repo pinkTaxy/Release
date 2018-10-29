@@ -8,6 +8,8 @@ import android.widget.Button;
 
 public class WelcomeActivity extends AppCompatActivity {
 
+    //TODO: add responsive font size!!!!!!!!111!!!!
+
     Button toLogIn;
     Intent intentLogIn;
 
