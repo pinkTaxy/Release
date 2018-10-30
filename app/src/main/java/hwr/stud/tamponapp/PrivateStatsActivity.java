@@ -13,6 +13,8 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import hwr.stud.mylibrary.DonationListAdapter;
+import hwr.stud.mylibrary.DonationListItem;
 import hwr.stud.mylibrary.ExpenseListItem;
 import hwr.stud.mylibrary.ExpensesListAdapter;
 
@@ -25,8 +27,10 @@ public class PrivateStatsActivity extends AppCompatActivity {
     ListView donations;
 
     ExpensesListAdapter expensesAdapter;
+    DonationListAdapter donationsAdapter;
 
     List<ExpenseListItem> expenseItemsList;
+    List<DonationListItem> donationItemsList;
 
     Intent donationActivity;
     Intent addExpenseActivity;
@@ -42,9 +46,7 @@ public class PrivateStatsActivity extends AppCompatActivity {
         toAddExpense = (Button) findViewById(R.id.toAddExpense);
         addExpenseActivity = new Intent(this, AddExpenseActitvity.class);
 
-        // donationsAdapter = new ExpensesListAdapter();
 
-        // ListAdapter adapter = new
 
         expenseItemsList = new ArrayList<ExpenseListItem>();
         expenseItemsList.add(new ExpenseListItem("50 €", "01.02.2004", "Blabla Tampon."));
@@ -60,6 +62,22 @@ public class PrivateStatsActivity extends AppCompatActivity {
 
         expenses = (ListView) findViewById(R.id._dynamicListViewExpenses);
         expenses.setAdapter(expensesAdapter);
+
+        donationItemsList = new ArrayList<DonationListItem>();
+        donationItemsList.add(new DonationListItem("50 €", "01.02.2004"));
+        donationItemsList.add(new DonationListItem("533 €", "01.03.2004"));
+        donationItemsList.add(new DonationListItem("12 €", "01.04.2004"));
+        donationItemsList.add(new DonationListItem("4 €", "01.05.2004"));
+        donationItemsList.add(new DonationListItem("56 €", "01.06.2004"));
+        donationItemsList.add(new DonationListItem("3 €", "01.07.2004"));
+        donationItemsList.add(new DonationListItem("50 €", "01.08.2004"));
+        donationItemsList.add(new DonationListItem("54 €", "01.09.2004"));
+        donationItemsList.add(new DonationListItem("87 €", "01.10.2004"));
+
+        donationsAdapter = new DonationListAdapter(this, R.layout.view_donation_list_item, (ArrayList<DonationListItem>) donationItemsList);
+
+        donations = (ListView) findViewById(R.id._dynamicListViewDonations);
+        donations.setAdapter(donationsAdapter);
 
         donations = (ListView) findViewById(R.id._dynamicListViewDonations);
         // donations.setAdapter(donationsAdapter);
