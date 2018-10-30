@@ -6,58 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".WelcomeActivity">
 
- <!--   <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:weightSum="100">
-
-        <TextView
-            android:id="@+id/textViewGlobalStats"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="45"
-            android:gravity="center"
-            android:text=""
-            android:textSize="36sp" />
-
-        <TextView
-            android:id="@+id/textViewInfoText"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="45"
-            android:gravity="center"
-            android:text="text"
-            android:textSize="36sp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:layout_weight="10"
-            android:weightSum="100">
-
-
-            <Button
-                android:id="@+id/toLogin"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="16dp"
-                android:layout_weight="50"
-                android:text="@string/Login" />
-
-            <Button
-                android:id="@+id/toSignup"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="16dp"
-                android:layout_weight="50"
-                android:text="@string/Signup" />
-
-        </LinearLayout>
-
-    </LinearLayout>-->
-
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="0dp"

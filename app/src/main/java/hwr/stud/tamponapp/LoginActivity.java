@@ -1,6 +1,7 @@
 package hwr.stud.tamponapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -113,8 +114,7 @@ public class LoginActivity extends AppCompatActivity {
                             loginConnection.setRequestProperty(
                                     "Authorization",
                                     "Basic " +
-                                    new HttpBasicAuth(usernameString, passwordString)
-                                            .getAuthString());
+                                    new HttpBasicAuth().getAuthString(usernameString, passwordString));
 
                             Log.i("[loginConnection]", "Request methode set to POST");
                             Log.i("[setBasicAuth]", "Basic Auth was set.");
@@ -152,7 +152,16 @@ public class LoginActivity extends AppCompatActivity {
                             // test request
                             Log.i("[loginJSON]", loginJSON.toString());
 
-                            if(isLoginSuccess(loginConnection)) startActivity(privateStatsActivity);
+                            if(isLoginSuccess(loginConnection)) {
+
+                                SharedPreferences pref = getApplicationContext().getSharedPreferences("Creds", 0); // 0 - for private mode
+                                SharedPreferences.Editor editor = pref.edit();
+                                if (pref.getString("username", null) != usernameString || pref.getString("password", null)!= passwordString) {
+                                    editor.putString("username", usernameString);
+                                    editor.putString("password", passwordString);
+                                }
+                                startActivity(privateStatsActivity);
+                            }
 
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -199,7 +208,11 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         }
                         jsonReader.endObject();
+
                         Log.i("[jsonReader]", jsonReader.toString());
+                      /*  while(jsonReader.hasNext()) {
+                            Log.i("[JsonReader]", jsonReader.nextString());
+                        }*/
                         jsonReader.close();
                     }
 

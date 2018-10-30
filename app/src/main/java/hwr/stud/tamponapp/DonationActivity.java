@@ -26,7 +26,10 @@ public class DonationActivity extends AppCompatActivity {
 
                 // TODO: do donation
 
-                startActivity(privateStatsAcitvity);
+                //startActivity(privateStatsAcitvity);
+
+                
+
             }
         });
     }
