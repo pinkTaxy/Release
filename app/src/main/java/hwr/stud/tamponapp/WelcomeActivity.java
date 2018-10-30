@@ -57,7 +57,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 HttpsUtility.trustAllCertificates();
 
                 try {
-                    URL url = new URL("https://192.168.178.26:443/welcome");
+                    URL url = new URL("https://192.168.178.54:443/welcome");
                     HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
                     if (connection.getResponseCode() == 200) {
                         InputStream inputStream = connection.getInputStream();

@@ -146,7 +146,7 @@ public class AddExpenseActitvity extends AppCompatActivity {
 
                                     URL url = null;
                                     try {
-                                        url = new URL("https://192.168.178.26:443/upload");
+                                        url = new URL("https://192.168.178.54:443/upload");
                                     } catch (MalformedURLException e) {
                                         e.printStackTrace();
                                     }

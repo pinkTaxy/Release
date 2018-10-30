@@ -65,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
                 final String passwordString = password.getText().toString();
 
                 // Create loginURLString with params
-                final String loginURLString = "https://192.168.178.26:443/login"; //?un=" + usernameString + "&pw=" + passwordString;
+                final String loginURLString = "https://192.168.178.54:443/login"; //?un=" + usernameString + "&pw=" + passwordString;
 
                 // talk to REST Service, done in separate worker thread
                 // to be changed to Https
@@ -77,102 +77,99 @@ public class LoginActivity extends AppCompatActivity {
                     final String usernameString,
                     final String passwordString) {
 
-                AsyncTask.execute(new Runnable() {
-                    @Override
-                    public void run() {
+                AsyncTask.execute(() -> {
 
-                        HttpsUtility.trustAllCertificates();
+                    HttpsUtility.trustAllCertificates();
 
-                        URL url = null;
-                        try {
-                            url = new URL(loginURLString);
-                        } catch (MalformedURLException e) {
-                            e.printStackTrace();
-                            // TODO: Exeption handling!!
-                        }
-
-                        HttpsURLConnection loginConnection = null;
-                        try {
-                            loginConnection = (HttpsURLConnection) url.openConnection();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
-                        Log.i("[establishHttpsConnection()]", "success.");
-
-                        try {
-                            loginConnection.setRequestMethod("POST");
-                            loginConnection.setDoOutput(true);
-                            loginConnection.setRequestProperty(
-                                    "Content-Type",
-                                    "application/json; charset=UTF-8");
-                            loginConnection.setRequestProperty(
-                                    "Accept",
-                                    "application/json");
-                            loginConnection.setChunkedStreamingMode(0);
-                            loginConnection.setConnectTimeout(5000);
-                            loginConnection.setRequestProperty(
-                                    "Authorization",
-                                    "Basic " +
-                                    new HttpBasicAuth().getAuthString(usernameString, passwordString));
-
-                            Log.i("[loginConnection]", "Request methode set to POST");
-                            Log.i("[setBasicAuth]", "Basic Auth was set.");
-                        } catch (ProtocolException e) {
-                            e.printStackTrace();
-                            Log.i("[JSON]", "No Response from Server!");
-                        }
-
-                        // construct request body
-                        JSONObject loginJSON = new JSONObject();
-                        try {
-                            loginJSON.put("username", usernameString);
-                            loginJSON.put("password", passwordString);
-                            Log.i("[JSONObject]", "Request Body was created");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        Log.i("[??]", "wtf?");
-                        // write requestbody
-                        try {
-                            Log.i("[try]", "jup.");
-                            OutputStream outputStream = loginConnection.getOutputStream();
-                            Log.i("[getOutputSteam]", "success.");
-                            OutputStreamWriter outputStreamWriter =
-                                    new OutputStreamWriter(outputStream);
-                            Log.i("[OutputStreamWriter]", "success");
-                            try {
-                                outputStreamWriter.write(loginJSON.toString());
-                                outputStreamWriter.flush(); // Streams IMMER flushen!!
-                                Log.i("[outputStreamWriter]", "was flushed.");
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-
-                            // test request
-                            Log.i("[loginJSON]", loginJSON.toString());
-
-                            if(isLoginSuccess(loginConnection)) {
-
-                                SharedPreferences pref = getApplicationContext().getSharedPreferences("Creds", 0); // 0 - for private mode
-                                SharedPreferences.Editor editor = pref.edit();
-                                //if (pref.getString("username", null) != usernameString || pref.getString("password", null)!= passwordString) {
-                                    editor.putString("username", usernameString);
-                                    editor.putString("password", passwordString);
-                                    editor.commit();
-                                //}
-
-                                Log.i("[Shared Preferences]", pref.getString("username", null));
-                                Log.i("[Shared Preferences]", pref.getString("password", null));
-                                startActivity(privateStatsActivity);
-                            }
-
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            Log.i("[StreamWriter]", "failed.");
-                        }
-                        loginConnection.disconnect();
+                    URL url = null;
+                    try {
+                        url = new URL(loginURLString);
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                        // TODO: Exeption handling!!
                     }
+
+                    HttpsURLConnection loginConnection = null;
+                    try {
+                        loginConnection = (HttpsURLConnection) url.openConnection();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    Log.i("[establishHttpsConnection()]", "success.");
+
+                    try {
+                        loginConnection.setRequestMethod("POST");
+                        loginConnection.setDoOutput(true);
+                        loginConnection.setRequestProperty(
+                                "Content-Type",
+                                "application/json; charset=UTF-8");
+                        loginConnection.setRequestProperty(
+                                "Accept",
+                                "application/json");
+                        loginConnection.setChunkedStreamingMode(0);
+                        loginConnection.setConnectTimeout(5000);
+                        loginConnection.setRequestProperty(
+                                "Authorization",
+                                "Basic " +
+                                new HttpBasicAuth().getAuthString(usernameString, passwordString));
+
+                        Log.i("[loginConnection]", "Request methode set to POST");
+                        Log.i("[setBasicAuth]", "Basic Auth was set.");
+                    } catch (ProtocolException e) {
+                        e.printStackTrace();
+                        Log.i("[JSON]", "No Response from Server!");
+                    }
+
+                    // construct request body
+                    JSONObject loginJSON = new JSONObject();
+                    try {
+                        loginJSON.put("username", usernameString);
+                        loginJSON.put("password", passwordString);
+                        Log.i("[JSONObject]", "Request Body was created");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    Log.i("[??]", "wtf?");
+                    // write requestbody
+                    try {
+                        Log.i("[try]", "jup.");
+                        OutputStream outputStream = loginConnection.getOutputStream();
+                        Log.i("[getOutputSteam]", "success.");
+                        OutputStreamWriter outputStreamWriter =
+                                new OutputStreamWriter(outputStream);
+                        Log.i("[OutputStreamWriter]", "success");
+                        try {
+                            outputStreamWriter.write(loginJSON.toString());
+                            outputStreamWriter.flush(); // Streams IMMER flushen!!
+                            Log.i("[outputStreamWriter]", "was flushed.");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        // test request
+                        Log.i("[loginJSON]", loginJSON.toString());
+
+                        if(isLoginSuccess(loginConnection)) {
+
+                            SharedPreferences pref = getApplicationContext().getSharedPreferences("Creds", 0); // 0 - for private mode
+                            SharedPreferences.Editor editor = pref.edit();
+                            //if (pref.getString("username", null) != usernameString || pref.getString("password", null)!= passwordString) {
+                                editor.putString("username", usernameString);
+                                editor.putString("password", passwordString);
+                                editor.commit();
+                            //}
+
+                            Log.i("[Shared Preferences]", pref.getString("username", null));
+                            Log.i("[Shared Preferences]", pref.getString("password", null));
+                            startActivity(privateStatsActivity);
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Log.i("[StreamWriter]", "failed.");
+                    }
+                    loginConnection.disconnect();
                 });
 
             }

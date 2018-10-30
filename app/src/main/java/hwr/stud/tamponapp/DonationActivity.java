@@ -45,9 +45,6 @@ public class DonationActivity extends AppCompatActivity {
         donate = (Button) findViewById(R.id.submitDonation);
         privateStatsAcitvity = new Intent(this, PrivateStatsActivity.class);
 
-        String donationValue = donationAmount.getText().toString();
-        Log.i("[Donation Value]", donationValue.toString());
-
         donate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,12 +59,15 @@ public class DonationActivity extends AppCompatActivity {
 
                         HttpsUtility.trustAllCertificates();
 
+                        String donationValue = donationAmount.getText().toString();
+                        Log.i("[Donation Value]", donationValue.toString());
+
                         SharedPreferences pref = getApplicationContext().getSharedPreferences("Creds", 0); // 0 - for private mode
 
                         URL url;
 
                         try {
-                            url = new URL("https://192.168.178.26:443/donation");
+                            url = new URL("https://192.168.178.54:443/donation");
 
                             Log.i("[Shared Preferences]", pref.getString("password", null));
                             Log.i("[Shared Preferences]", pref.getString("username", null));
@@ -83,7 +83,11 @@ public class DonationActivity extends AppCompatActivity {
                             JSONObject requestBody = new JSONObject();
                             requestBody.put("donationValue", donationValue.toString());
 
+                            Log.i("[requestBody]", requestBody.toString());
+
                             HttpsPostRequest.sendRequest(connection, requestBody);
+
+                            Log.i("[HttpsPostRequest]", "was sendt.");
 
                             // handle response as json
                             if (connection.getResponseCode() == 200) {
