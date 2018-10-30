@@ -47,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login2);
+        setContentView(R.layout.activity_login);
 
         privateStatsActivity = new Intent(this, PrivateStatsActivity.class);
 
@@ -65,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
                 final String passwordString = password.getText().toString();
 
                 // Create loginURLString with params
-                final String loginURLString = "https://192.168.178.54:443/login"; //?un=" + usernameString + "&pw=" + passwordString;
+                final String loginURLString = "https://192.168.178.26:443/login"; //?un=" + usernameString + "&pw=" + passwordString;
 
                 // talk to REST Service, done in separate worker thread
                 // to be changed to Https
@@ -156,10 +156,14 @@ public class LoginActivity extends AppCompatActivity {
 
                                 SharedPreferences pref = getApplicationContext().getSharedPreferences("Creds", 0); // 0 - for private mode
                                 SharedPreferences.Editor editor = pref.edit();
-                                if (pref.getString("username", null) != usernameString || pref.getString("password", null)!= passwordString) {
+                                //if (pref.getString("username", null) != usernameString || pref.getString("password", null)!= passwordString) {
                                     editor.putString("username", usernameString);
                                     editor.putString("password", passwordString);
-                                }
+                                    editor.commit();
+                                //}
+
+                                Log.i("[Shared Preferences]", pref.getString("username", null));
+                                Log.i("[Shared Preferences]", pref.getString("password", null));
                                 startActivity(privateStatsActivity);
                             }
 

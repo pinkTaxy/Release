@@ -69,7 +69,7 @@ public class SignupActivity extends AppCompatActivity {
                 sexString = sex.getText().toString();
 
                 // Create loginURLString with params
-                signUpURLString = "https://192.168.178.54:443/signup"; //?un=" + usernameString + "&pw=" + passwordString;
+                signUpURLString = "https://192.168.178.26:443/signup"; //?un=" + usernameString + "&pw=" + passwordString;
 
                 // talk to REST Service, done in separate worker thread
                 // to be changed to Https

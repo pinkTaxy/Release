@@ -9,6 +9,13 @@ import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+import hwr.stud.mylibrary.ExpenseListItem;
+import hwr.stud.mylibrary.ExpensesListAdapter;
+
 public class PrivateStatsActivity extends AppCompatActivity {
 
     Button toDonation;
@@ -17,14 +24,12 @@ public class PrivateStatsActivity extends AppCompatActivity {
     ListView expenses;
     ListView donations;
 
-    ArrayAdapter<String> expensesAdapter;
-    ArrayAdapter<String> donationsAdapter;
+    ExpensesListAdapter expensesAdapter;
+
+    List<ExpenseListItem> expenseItemsList;
 
     Intent donationActivity;
     Intent addExpenseActivity;
-
-    String[] donationsArray = {"10 €", "20 €", "30 €", "40 €", "50 €"};
-    String[] expensesArray = {"15 €", "25 €", "35 €", "45 €", "55 €"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,19 +42,27 @@ public class PrivateStatsActivity extends AppCompatActivity {
         toAddExpense = (Button) findViewById(R.id.toAddExpense);
         addExpenseActivity = new Intent(this, AddExpenseActitvity.class);
 
-        donationsAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, donationsArray);
+        // donationsAdapter = new ExpensesListAdapter();
 
         // ListAdapter adapter = new
 
-        expensesAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, expensesArray);
+        expenseItemsList = new ArrayList<ExpenseListItem>();
+        expenseItemsList.add(new ExpenseListItem("50 €", "01.02.2004", "Blabla Tampon."));
+        expenseItemsList.add(new ExpenseListItem("34 €", "02.02.2004", "Blablaasdasd Tampon."));
+        expenseItemsList.add(new ExpenseListItem("63 €", "03.02.2004", "Blablaasdasdasd Tampon."));
+        expenseItemsList.add(new ExpenseListItem("1 €", "04.02.2004", "Blabla Tampon.asdasas"));
+        expenseItemsList.add(new ExpenseListItem("50 €", "05.02.2004", "Blabla Tampon."));
+        expenseItemsList.add(new ExpenseListItem("56 €", "06.02.2004", "Blabla Tamponasdasd."));
+        expenseItemsList.add(new ExpenseListItem("54 €", "07.02.2004", "Blabla Tampon."));
+
+
+        expensesAdapter = new ExpensesListAdapter(this, R.layout.view_expense_list_item, (ArrayList<ExpenseListItem>) expenseItemsList);
 
         expenses = (ListView) findViewById(R.id._dynamicListViewExpenses);
         expenses.setAdapter(expensesAdapter);
 
         donations = (ListView) findViewById(R.id._dynamicListViewDonations);
-        donations.setAdapter(donationsAdapter);
+        // donations.setAdapter(donationsAdapter);
 
         toDonation.setOnClickListener(new View.OnClickListener() {
             @Override

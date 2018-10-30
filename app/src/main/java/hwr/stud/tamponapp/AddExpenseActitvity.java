@@ -32,8 +32,6 @@ public class AddExpenseActitvity extends AppCompatActivity {
 
     private static final int REQUEST_CAPTURE_IMAGE = 100;
 
-    SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
-
     Button addExpense;
     Button takeFoto;
 
@@ -96,23 +94,27 @@ public class AddExpenseActitvity extends AppCompatActivity {
 
                             try {
                                 requestBody.put("imageName", Long.toString(System.currentTimeMillis()));
-                                requestBody.put("image", imageBitmap);
+                                requestBody.put("file", imageBitmap);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
 
                             URL url = null;
                             try {
-                                url = new URL("https://192.168.178.54:443/upload");
+                                url = new URL("https://192.168.178.26:443/upload");
                             } catch (MalformedURLException e) {
                                 e.printStackTrace();
                             }
 
                             HttpsURLConnection connection = null;
+                            SharedPreferences pref = getApplicationContext().getSharedPreferences("Creds", 0); // 0 - for private mode
+                            Log.i("[Shared Preferences]", pref.getString("password", null));
+                            Log.i("[Shared Preferences]", pref.getString("username", null));
 
                             try {
                                 connection = getConnection(url, new HttpBasicAuth().getAuthString(pref.getString("username", null), pref.getString("password", null)));
                                 HttpsPostRequest.sendRequest(connection, requestBody);
+                                Log.i("[HttpsPostRequest]", "was sendt.");
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }

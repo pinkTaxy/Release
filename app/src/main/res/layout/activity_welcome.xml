@@ -55,14 +55,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Login" />
+            android:text="Anmelden" />
 
         <Button
             android:id="@+id/toSignup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Signup" />
+            android:text="Registrieren" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
