@@ -1,6 +1,5 @@
-package hwr.stud.tamponapp;
+package hwr.stud.pinkTaxy;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -27,7 +26,6 @@ import java.net.URL;
 import javax.net.ssl.HttpsURLConnection;
 
 import hwr.stud.mylibrary.HttpBasicAuth;
-import hwr.stud.mylibrary.HttpsConnection;
 import hwr.stud.mylibrary.HttpsPostRequest;
 import hwr.stud.mylibrary.HttpsUtility;
 

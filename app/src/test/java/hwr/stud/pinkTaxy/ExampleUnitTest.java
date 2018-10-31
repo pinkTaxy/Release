@@ -1,4 +1,4 @@
-package hwr.stud.tamponapp;
+package hwr.stud.pinkTaxy;
 
 import org.junit.Test;
 

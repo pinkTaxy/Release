@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="hwr.stud.tamponapp">
+    package="hwr.stud.pinkTaxy">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -20,20 +20,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".WelcomeActivity">
+        <activity android:name="hwr.stud.pinkTaxy.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".SignupActivity" />
-        <activity android:name=".StatsActivity" />
+        <activity android:name="hwr.stud.pinkTaxy.LoginActivity" />
+        <activity android:name="hwr.stud.pinkTaxy.SignupActivity" />
+        <activity android:name="hwr.stud.pinkTaxy.StatsActivity" />
         <!--<activity android:name=".WelcomeActivity" />-->
-        <activity android:name=".DonationActivity" />
-        <activity android:name=".PrivateStatsActivity" />
-        <activity android:name=".AddExpenseActitvity"></activity>
+        <activity android:name="hwr.stud.pinkTaxy.DonationActivity" />
+        <activity android:name="hwr.stud.pinkTaxy.PrivateStatsActivity" />
+        <activity android:name="hwr.stud.pinkTaxy.AddExpenseActitvity"></activity>
     </application>
 
 </manifest>

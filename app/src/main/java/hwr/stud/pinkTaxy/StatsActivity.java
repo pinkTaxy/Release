@@ -1,7 +1,5 @@
-package hwr.stud.tamponapp;
+package hwr.stud.pinkTaxy;
 
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;

@@ -1,4 +1,4 @@
-package hwr.stud.tamponapp;
+package hwr.stud.pinkTaxy;
 
 import android.content.Intent;
 import android.os.Bundle;
