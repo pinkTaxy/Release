@@ -52,7 +52,6 @@ public class SignupActivity extends AppCompatActivity {
         password = (EditText) findViewById(R.id.password);
         name = (EditText) findViewById(R.id.name);
         email = (EditText) findViewById(R.id.email);
-        sex = (EditText) findViewById(R.id.sex);
         signUp = (Button) findViewById(R.id.signUp);
 
         privateStats = new Intent(this, PrivateStatsActivity.class);

@@ -58,8 +58,8 @@ public class PrivateStatsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_private_stats);
 
-         donationsView = (TextView) findViewById(R.id.__donations);
-         expensesView = (TextView) findViewById(R.id.__expenses);
+        donationsView = (TextView) findViewById(R.id.__donations);
+        expensesView = (TextView) findViewById(R.id.__expenses);
 
         toDonation = (Button) findViewById(R.id.toDonation);
         donationActivity = new Intent(this, DonationActivity.class);
@@ -87,111 +87,111 @@ public class PrivateStatsActivity extends AppCompatActivity {
         }*/
 
 
-
         HttpsUtility.trustAllCertificates();
 
         AsyncTask.execute(new Runnable() {
-                              @Override
-                              public void run() {
+            @Override
+            public void run() {
 
-                                  try {
-                                      URL url = new URL("https://192.168.178.54:443/stats");
-                                      HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+                try {
+                    URL url = new URL("https://192.168.178.54:443/stats");
+                    HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 
-                                      SharedPreferences pref = getApplicationContext().getSharedPreferences("Creds", 0); // 0 - for private mode
-                                      Log.i("[Shared Preferences]", pref.getString("password", null));
-                                      Log.i("[Shared Preferences]", pref.getString("username", null));
-
-
-                                      connection.setRequestProperty(
-                                              "Authorization",
-                                              "Basic " +
-                                                      new HttpBasicAuth().getAuthString(
-                                                              pref.getString("username", null),
-                                                              pref.getString("password", null)
-                                                      ));
-
-                                      Log.i("[loginConnection]", "Request methode set to POST");
-                                      Log.i("[setBasicAuth]", "Basic Auth was set.");
-
-                                      if (connection.getResponseCode() == 200) {
-                                          InputStream inputStream = connection.getInputStream();
-                                          InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-
-                                          String responseBodyString = IOUtils.toString(inputStream);
-
-                                          Log.i("[responseBodyString]", responseBodyString);
-
-                                         /* try {
+                    SharedPreferences pref = getApplicationContext().getSharedPreferences("Creds", 0); // 0 - for private mode
+                    Log.i("[Shared Preferences]", pref.getString("password", null));
+                    Log.i("[Shared Preferences]", pref.getString("username", null));
 
 
-                                              JSONArray responseBodyJsonArray = new JSONArray(responseBodyString);
-                                              Log.i("JSONArray", "was created");
-                                              String expenseItemsString = responseBodyJsonArray.getString().toString();
-                                              JSONArray expenseItemsJsonArray = new JSONArray(expenseItemsString);  //responseBodyJsonObject.getJSONObject("expenseItems").toString());
-                                              String donationItemsString = responseBodyJsonArray.getString("donationItems").toString();
-                                              JSONArray donationItemsJsonArray = new JSONArray(donationItemsString);
+                    connection.setRequestProperty(
+                            "Authorization",
+                            "Basic " +
+                                    new HttpBasicAuth().getAuthString(
+                                            pref.getString("username", null),
+                                            pref.getString("password", null)
+                                    ));
 
-                                              for(int i = 0; i < responseBodyJsonArray.length(); i++) {
-                                                  responseBodyJsonArray.getJSONObject();
-                                              }
-                                                 //responseBodyJsonObject.getJSONObject("donationItems").toString());
+                    Log.i("[loginConnection]", "Request methode set to POST");
+                    Log.i("[setBasicAuth]", "Basic Auth was set.");
 
-                                              Log.i("JSONObject", expenseItemsJsonArray.toString());
-                                              Log.i("JSONObject", donationItemsJsonArray.toString());
-                                          } catch (JSONException e) {
-                                              e.printStackTrace();
-                                          }*/
+                    if (connection.getResponseCode() == 200) {
+                        InputStream inputStream = connection.getInputStream();
+                        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
 
-                                          JsonReader jsonReader = new JsonReader(inputStreamReader);
+                        String responseBodyString = IOUtils.toString(inputStream);
 
-                                          String amount = "";
-                                          String date = "";
-                                          String description = "";
+                        Log.i("[responseBodyString]", responseBodyString);
 
- /*                                         jsonReader.beginObject();
-                                          while (jsonReader.hasNext()) {
-                                              String nextName = jsonReader.nextName();
-                                              if (nextName == "expenseItems") {
-                                                  jsonReader.beginObject();
-                                                  while (jsonReader.hasNext()) {
-                                                      String nextNameExpenseItem = jsonReader.nextName();
+                         /* try {
 
-                                                      if (nextNameExpenseItem == "amount")
-                                                          amount = jsonReader.nextString();
-                                                      if (nextNameExpenseItem == "date")
-                                                          date = jsonReader.nextString();
-                                                      if (nextNameExpenseItem == "description")
-                                                          description = jsonReader.nextString();
-                                                  }
-                                                  jsonReader.endObject();
-                                                  expenseItemsList.add(new ExpenseListItem(amount, date, description));
-                                              }
 
-                                              if (nextName == "donationItems") {
-                                                  jsonReader.beginObject();
-                                                  while (jsonReader.hasNext()) {
-                                                      String nextNameDonationItem = jsonReader.nextName();
+                              JSONArray responseBodyJsonArray = new JSONArray(responseBodyString);
+                              Log.i("JSONArray", "was created");
+                              String expenseItemsString = responseBodyJsonArray.getString().toString();
+                              JSONArray expenseItemsJsonArray = new JSONArray(expenseItemsString);  //responseBodyJsonObject.getJSONObject("expenseItems").toString());
+                              String donationItemsString = responseBodyJsonArray.getString("donationItems").toString();
+                              JSONArray donationItemsJsonArray = new JSONArray(donationItemsString);
 
-                                                      if (nextNameDonationItem == "amount")
-                                                          amount = jsonReader.nextString();
-                                                      if (nextNameDonationItem == "date")
-                                                          date = jsonReader.nextString();
-                                                  }
-                                                  jsonReader.endObject();
-                                                  donationItemsList.add(new DonationListItem(amount, date));
-                                              }
-                                          }
-                                          jsonReader.endObject();*/
-                                      } else {
-                                          Log.i("[HttpsUrlConnection]", Integer.toString(connection.getResponseCode()));
-                                      }
-                                  } catch (IOException e) {
-                                      e.printStackTrace();
-
-                                  }
+                              for(int i = 0; i < responseBodyJsonArray.length(); i++) {
+                                  responseBodyJsonArray.getJSONObject();
                               }
-                          });
+                                 //responseBodyJsonObject.getJSONObject("donationItems").toString());
+
+                              Log.i("JSONObject", expenseItemsJsonArray.toString());
+                              Log.i("JSONObject", donationItemsJsonArray.toString());
+                          } catch (JSONException e) {
+                              e.printStackTrace();
+                          }*/
+
+                                                JsonReader jsonReader = new JsonReader(inputStreamReader);
+
+                                                String amount = "";
+                                                String date = "";
+                                                String description = "";
+
+                        /*                                         jsonReader.beginObject();
+                          while (jsonReader.hasNext()) {
+                              String nextName = jsonReader.nextName();
+                              if (nextName == "expenseItems") {
+                                  jsonReader.beginObject();
+                                  while (jsonReader.hasNext()) {
+                                      String nextNameExpenseItem = jsonReader.nextName();
+
+                                      if (nextNameExpenseItem == "amount")
+                                          amount = jsonReader.nextString();
+                                      if (nextNameExpenseItem == "date")
+                                          date = jsonReader.nextString();
+                                      if (nextNameExpenseItem == "description")
+                                          description = jsonReader.nextString();
+                                  }
+                                  jsonReader.endObject();
+                                  expenseItemsList.add(new ExpenseListItem(amount, date, description));
+                              }
+
+                              if (nextName == "donationItems") {
+                                  jsonReader.beginObject();
+                                  while (jsonReader.hasNext()) {
+                                      String nextNameDonationItem = jsonReader.nextName();
+
+                                      if (nextNameDonationItem == "amount")
+                                          amount = jsonReader.nextString();
+                                      if (nextNameDonationItem == "date")
+                                          date = jsonReader.nextString();
+                                  }
+                                  jsonReader.endObject();
+                                  donationItemsList.add(new DonationListItem(amount, date));
+                              }
+                          }
+                          jsonReader.endObject();*/
+
+                    } else {
+                        Log.i("[HttpsUrlConnection]", Integer.toString(connection.getResponseCode()));
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+
+                }
+            }
+        });
 
 
         if (expenseItemsList.isEmpty()) {
@@ -206,7 +206,7 @@ public class PrivateStatsActivity extends AppCompatActivity {
             expenseItemsList.add(new ExpenseListItem("54 €", "07.02.2004", "Blabla Tampon."));
 
         }
-        if(donationItemsList.isEmpty()) {
+        if (donationItemsList.isEmpty()) {
             Log.i("[donationItemsList]", "fallback was entered");
             donationItemsList = new ArrayList<DonationListItem>();
             donationItemsList.add(new DonationListItem("50 €", "01.02.2004"));
