@@ -66,7 +66,6 @@ public class SignupActivity extends AppCompatActivity {
                 passwordString = password.getText().toString();
                 nameString = name.getText().toString();
                 emailString = email.getText().toString();
-                sexString = sex.getText().toString();
 
                 // Create loginURLString with params
                 signUpURLString = "https://192.168.178.54:443/signup"; //?un=" + usernameString + "&pw=" + passwordString;
@@ -100,7 +99,6 @@ public class SignupActivity extends AppCompatActivity {
                             signupJSON.put("pw", passwordString);
                             signupJSON.put("name", nameString);
                             signupJSON.put("email", emailString);
-                            signupJSON.put("sex", sexString);
 
                             // write requestbody
                             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(SignUpConnection.getOutputStream());

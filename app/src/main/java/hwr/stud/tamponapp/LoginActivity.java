@@ -49,6 +49,12 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("Creds", 0); // 0 - for private mode
+
+        /*if(!pref.contains("username") || !pref.contains("password")) {
+            startActivit
+        }*/
+
         privateStatsActivity = new Intent(this, PrivateStatsActivity.class);
 
         username = (EditText) findViewById(R.id.username);
@@ -108,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
                                 "Accept",
                                 "application/json");
                         loginConnection.setChunkedStreamingMode(0);
-                        loginConnection.setConnectTimeout(5000);
+                        loginConnection.setConnectTimeout(15000);
                         loginConnection.setRequestProperty(
                                 "Authorization",
                                 "Basic " +
@@ -135,6 +141,7 @@ public class LoginActivity extends AppCompatActivity {
                     try {
                         Log.i("[try]", "jup.");
                         OutputStream outputStream = loginConnection.getOutputStream();
+                        Log.i("[connection]", Integer.toString(loginConnection.getResponseCode()));
                         Log.i("[getOutputSteam]", "success.");
                         OutputStreamWriter outputStreamWriter =
                                 new OutputStreamWriter(outputStream);
@@ -152,13 +159,13 @@ public class LoginActivity extends AppCompatActivity {
 
                         if(isLoginSuccess(loginConnection)) {
 
-                            SharedPreferences pref = getApplicationContext().getSharedPreferences("Creds", 0); // 0 - for private mode
                             SharedPreferences.Editor editor = pref.edit();
-                            //if (pref.getString("username", null) != usernameString || pref.getString("password", null)!= passwordString) {
+                            if (pref.getString("username", null) != usernameString || pref.getString("password", null)!= passwordString) {
+                                editor.clear();
                                 editor.putString("username", usernameString);
                                 editor.putString("password", passwordString);
                                 editor.commit();
-                            //}
+                            }
 
                             Log.i("[Shared Preferences]", pref.getString("username", null));
                             Log.i("[Shared Preferences]", pref.getString("password", null));

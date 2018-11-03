@@ -12,6 +12,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import org.apache.commons.io.IOUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,6 +26,7 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -47,10 +54,19 @@ public class PrivateStatsActivity extends AppCompatActivity {
     Intent donationActivity;
     Intent addExpenseActivity;
 
+    TextView donationsView;
+    TextView expensesView;
+
+    Integer donationsInt = 0;
+    Integer expensesInt = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_private_stats);
+
+         donationsView = (TextView) findViewById(R.id.__donations);
+         expensesView = (TextView) findViewById(R.id.__expenses);
 
         toDonation = (Button) findViewById(R.id.toDonation);
         donationActivity = new Intent(this, DonationActivity.class);
@@ -60,6 +76,24 @@ public class PrivateStatsActivity extends AppCompatActivity {
 
         expenseItemsList = new ArrayList<ExpenseListItem>();
         donationItemsList = new ArrayList<DonationListItem>();
+
+    /*    Bundle extrasExpense = getIntent().getExtras();
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("Creds", 0); // 0 - for private mode
+
+        if (!extrasExpense.isEmpty()) {
+            expenseItemsList.add(new ExpenseListItem(extrasExpense.get("value").toString(), extrasExpense.get("date").toString(), extrasExpense.get("description").toString()));
+            expensesInt += Integer.parseInt(extrasExpense.get("value").toString());
+            expensesView.setText("Meine Ausgaben: " + expensesInt.toString() + "\nAusgaben gesamt: 1000 €");
+        }
+
+        Bundle extrasDonation = getIntent().getExtras();
+        if (!extrasDonation.isEmpty()) {
+            donationItemsList.add(new DonationListItem(extrasDonation.get("value").toString(), extrasDonation.get("date").toString()));
+            donationsInt += Integer.parseInt(extrasDonation.get("value").toString());
+            donationsView.setText("Meine Spenden: " + donationsInt.toString() + "\nSpenden gesamt: 1000 €");
+        }*/
+
+
 
         HttpsUtility.trustAllCertificates();
 
@@ -90,13 +124,39 @@ public class PrivateStatsActivity extends AppCompatActivity {
                                       if (connection.getResponseCode() == 200) {
                                           InputStream inputStream = connection.getInputStream();
                                           InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+
+                                          String responseBodyString = IOUtils.toString(inputStream);
+
+                                          Log.i("[responseBodyString]", responseBodyString);
+
+                                         /* try {
+
+
+                                              JSONArray responseBodyJsonArray = new JSONArray(responseBodyString);
+                                              Log.i("JSONArray", "was created");
+                                              String expenseItemsString = responseBodyJsonArray.getString().toString();
+                                              JSONArray expenseItemsJsonArray = new JSONArray(expenseItemsString);  //responseBodyJsonObject.getJSONObject("expenseItems").toString());
+                                              String donationItemsString = responseBodyJsonArray.getString("donationItems").toString();
+                                              JSONArray donationItemsJsonArray = new JSONArray(donationItemsString);
+
+                                              for(int i = 0; i < responseBodyJsonArray.length(); i++) {
+                                                  responseBodyJsonArray.getJSONObject();
+                                              }
+                                                 //responseBodyJsonObject.getJSONObject("donationItems").toString());
+
+                                              Log.i("JSONObject", expenseItemsJsonArray.toString());
+                                              Log.i("JSONObject", donationItemsJsonArray.toString());
+                                          } catch (JSONException e) {
+                                              e.printStackTrace();
+                                          }*/
+
                                           JsonReader jsonReader = new JsonReader(inputStreamReader);
 
                                           String amount = "";
                                           String date = "";
                                           String description = "";
 
-                                          jsonReader.beginObject();
+ /*                                         jsonReader.beginObject();
                                           while (jsonReader.hasNext()) {
                                               String nextName = jsonReader.nextName();
                                               if (nextName == "expenseItems") {
@@ -115,7 +175,7 @@ public class PrivateStatsActivity extends AppCompatActivity {
                                                   expenseItemsList.add(new ExpenseListItem(amount, date, description));
                                               }
 
-                                              if (jsonReader.nextName() == "donationStats") {
+                                              if (nextName == "donationItems") {
                                                   jsonReader.beginObject();
                                                   while (jsonReader.hasNext()) {
                                                       String nextNameDonationItem = jsonReader.nextName();
@@ -129,39 +189,44 @@ public class PrivateStatsActivity extends AppCompatActivity {
                                                   donationItemsList.add(new DonationListItem(amount, date));
                                               }
                                           }
-                                          jsonReader.endObject();
+                                          jsonReader.endObject();*/
                                       } else {
                                           Log.i("[HttpsUrlConnection]", Integer.toString(connection.getResponseCode()));
-
-                                          expenseItemsList = new ArrayList<ExpenseListItem>();
-                                          expenseItemsList.add(new ExpenseListItem("50 €", "01.02.2004", "Blabla Tampon."));
-                                          expenseItemsList.add(new ExpenseListItem("34 €", "02.02.2004", "Blablaasdasd Tampon."));
-                                          expenseItemsList.add(new ExpenseListItem("63 €", "03.02.2004", "Blablaasdasdasd Tampon."));
-                                          expenseItemsList.add(new ExpenseListItem("1 €", "04.02.2004", "Blabla Tampon.asdasas"));
-                                          expenseItemsList.add(new ExpenseListItem("50 €", "05.02.2004", "Blabla Tampon."));
-                                          expenseItemsList.add(new ExpenseListItem("56 €", "06.02.2004", "Blabla Tamponasdasd."));
-                                          expenseItemsList.add(new ExpenseListItem("54 €", "07.02.2004", "Blabla Tampon."));
-
-
-                                          donationItemsList = new ArrayList<DonationListItem>();
-                                          donationItemsList.add(new DonationListItem("50 €", "01.02.2004"));
-                                          donationItemsList.add(new DonationListItem("533 €", "01.03.2004"));
-                                          donationItemsList.add(new DonationListItem("12 €", "01.04.2004"));
-                                          donationItemsList.add(new DonationListItem("4 €", "01.05.2004"));
-                                          donationItemsList.add(new DonationListItem("56 €", "01.06.2004"));
-                                          donationItemsList.add(new DonationListItem("3 €", "01.07.2004"));
-                                          donationItemsList.add(new DonationListItem("50 €", "01.08.2004"));
-                                          donationItemsList.add(new DonationListItem("54 €", "01.09.2004"));
-                                          donationItemsList.add(new DonationListItem("87 €", "01.10.2004"));
-
-
                                       }
                                   } catch (IOException e) {
                                       e.printStackTrace();
+
                                   }
                               }
                           });
 
+
+        if (expenseItemsList.isEmpty()) {
+            Log.i("[expenseItemsList]", "fallback was entered");
+            expenseItemsList = new ArrayList<ExpenseListItem>();
+            expenseItemsList.add(new ExpenseListItem("50 €", "01.02.2004", "Blabla Tampon."));
+            expenseItemsList.add(new ExpenseListItem("34 €", "02.02.2004", "Blablaasdasd Tampon."));
+            expenseItemsList.add(new ExpenseListItem("63 €", "03.02.2004", "Blablaasdasdasd Tampon."));
+            expenseItemsList.add(new ExpenseListItem("1 €", "04.02.2004", "Blabla Tampon.asdasas"));
+            expenseItemsList.add(new ExpenseListItem("50 €", "05.02.2004", "Blabla Tampon."));
+            expenseItemsList.add(new ExpenseListItem("56 €", "06.02.2004", "Blabla Tamponasdasd."));
+            expenseItemsList.add(new ExpenseListItem("54 €", "07.02.2004", "Blabla Tampon."));
+
+        }
+        if(donationItemsList.isEmpty()) {
+            Log.i("[donationItemsList]", "fallback was entered");
+            donationItemsList = new ArrayList<DonationListItem>();
+            donationItemsList.add(new DonationListItem("50 €", "01.02.2004"));
+            donationItemsList.add(new DonationListItem("533 €", "01.03.2004"));
+            donationItemsList.add(new DonationListItem("12 €", "01.04.2004"));
+            donationItemsList.add(new DonationListItem("4 €", "01.05.2004"));
+            donationItemsList.add(new DonationListItem("56 €", "01.06.2004"));
+            donationItemsList.add(new DonationListItem("3 €", "01.07.2004"));
+            donationItemsList.add(new DonationListItem("50 €", "01.08.2004"));
+            donationItemsList.add(new DonationListItem("54 €", "01.09.2004"));
+            donationItemsList.add(new DonationListItem("87 €", "01.10.2004"));
+        }
+        Log.i("[bla]", "wtff?");
 
         expensesAdapter = new ExpensesListAdapter(this, R.layout.view_expense_list_item, (ArrayList<ExpenseListItem>) expenseItemsList);
         donationsAdapter = new DonationListAdapter(this, R.layout.view_donation_list_item, (ArrayList<DonationListItem>) donationItemsList);

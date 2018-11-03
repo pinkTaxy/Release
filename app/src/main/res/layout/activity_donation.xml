@@ -27,7 +27,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="64dp"
-        android:text="Hier kannst Du eine neue Spende anlegen. Zurzeit (Version 1.0) können lediglich Symbolische Credits gespendet werden, in Version 2 bekommst Du die Möglichkeit, die gespendeten Credits in Euro zu tauschen und zu spenden."
+        android:text="Hier kannst Du eine neue Spende anlegen. Zurzeit (Version 1.0) können lediglich symbolische Credits gespendet werden, in Version 2 bekommst Du die Möglichkeit, die gespendeten Credits in Euro zu tauschen und zu spenden."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"

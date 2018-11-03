@@ -55,6 +55,8 @@ public class AddExpenseActitvity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_expense_acitvity);
 
+
+
         expenseArticle = (EditText) findViewById(R.id.expenseArticle);
         expenseArticle.setVisibility(View.INVISIBLE);
 
@@ -136,13 +138,16 @@ public class AddExpenseActitvity extends AppCompatActivity {
                                     try {
                                         requestBody.put("imageName", Long.toString(System.currentTimeMillis()));
                                         requestBody.put("file", imageBitmap);
-                                        requestBody.put("value", expenseValue);
-                                        requestBody.put("article", expenseArticle);
+                                        requestBody.put("value", expenseValue.getText());
+                                        requestBody.put("article", expenseArticle.getText());
                                         Log.i("[requestBody]", requestBody.toString());
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
 
+                       /*             privateStats.putExtra("date", Long.toString(System.currentTimeMillis()));
+                                    privateStats.putExtra("value", expenseValue.getText());
+                                    privateStats.putExtra("description", expenseArticle.getText());*/
 
                                     URL url = null;
                                     try {

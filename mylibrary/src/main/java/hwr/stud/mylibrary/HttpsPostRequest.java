@@ -19,6 +19,7 @@ public class HttpsPostRequest {
             OutputStream outputStream = connection.getOutputStream();
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
             outputStreamWriter.write(requestBody.toString());
+            outputStreamWriter.flush();
             responseCode = connection.getResponseCode();
 
 

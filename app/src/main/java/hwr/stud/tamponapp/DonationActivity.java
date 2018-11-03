@@ -83,7 +83,15 @@ public class DonationActivity extends AppCompatActivity {
                             JSONObject requestBody = new JSONObject();
                             requestBody.put("donationValue", donationValue.toString());
 
+                         /*   privateStatsAcitvity.putExtra("date", Long.toString(System.currentTimeMillis()));
+                            privateStatsAcitvity.putExtra("value", donationAmount.getText());*/
+
                             Log.i("[requestBody]", requestBody.toString());
+
+                            /*// TODO: ACHTUNG!!
+
+                            requestBody = new JSONObject();
+                            requestBody.put("", "");*/
 
                             HttpsPostRequest.sendRequest(connection, requestBody);
 
